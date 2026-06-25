@@ -41,14 +41,6 @@ Project grouping decision:
 - If grouping is not approved, keep the production flat list and apply the refreshed table/action/status styling only.
 - In either case, users must still be able to scan and open all returned transmissions from the active search/filter result set.
 
-Out of scope:
-
-- Changing the underlying transmission lifecycle.
-- Adding bulk actions.
-- Adding notes persistence.
-- Changing filter behavior; filter panel work is covered by Story 05.
-- Changing detail page layout; detail page work is covered by Story 07.
-
 ## Acceptance Criteria
 
 - Projects page renders production transmission records with Details/Open action, transaction id, name/project name, customer, seals/state, received date, sent/components count, modified count, sent by, and status.

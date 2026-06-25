@@ -42,13 +42,6 @@ Account menu behavior:
 - Include `Logout`.
 - Do not change authentication, authorization, or logout semantics in this story.
 
-Out of scope:
-
-- Reworking authentication.
-- Changing role permissions.
-- Changing destination routes unless a routing migration is separately approved.
-- Adding new nav sections that are not part of the accepted mockup or production app.
-
 ## Acceptance Criteria
 
 - The production top navbar/admin dropdown is replaced on refreshed screens by the new shell/navigation treatment.

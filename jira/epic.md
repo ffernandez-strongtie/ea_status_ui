@@ -24,14 +24,6 @@ Production review confirmed that the implementation must preserve core existing 
 - Improve accessibility and keyboard usability for tables, filters, dialogs, menus, and forms.
 - Provide regression coverage for critical admin and transmission workflows.
 
-## Non-Goals
-
-- Replacing the authentication system.
-- Redesigning backend data ownership or external integrations.
-- Building broad analytics, reporting, notification, or real-time systems.
-- Migrating to a new database or API platform solely for the UI refresh.
-- Replacing production workflow semantics without product approval.
-
 ## Scope
 
 In scope:
@@ -43,14 +35,6 @@ In scope:
 - Maintenance and jobs pages aligned with production fields.
 - Shared table, filtering, action, badge/status, dialog/sheet, and form components.
 - Accessibility, responsive, and regression validation.
-
-Out of scope unless separately approved:
-
-- Full persistence for new notes/commenting behavior.
-- Saved filter presets or saved column preferences.
-- Bulk operations.
-- New notification systems.
-- New reporting dashboards.
 
 ## Success Metrics
 
