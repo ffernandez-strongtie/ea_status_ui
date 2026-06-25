@@ -8,6 +8,8 @@ As a StatusUI user, I want a clear app shell with persistent navigation so that 
 
 Replace the current production top-navbar/admin-dropdown navigation with the cleaner application shell direction shown in the mockup, using the approved Strong-Tie Design System UI/CSS patterns.
 
+Reference the accepted static mockup for the shell layout, sidebar collapse behavior, mobile menu behavior, active navigation states, account menu structure, icon treatment, and responsive CSS. The production implementation may copy or adapt the mockup's shell/navigation component structure and styles from `Uploads/statusui/src/App.jsx` and `Uploads/statusui/assets/css/super-admin.css` as long as production routes, authentication, authorization, logout behavior, and framework boundaries are preserved.
+
 The shell should keep all existing production destinations reachable:
 
 - Projects: current production `/statusui/Projects`
@@ -45,6 +47,7 @@ Account menu behavior:
 ## Acceptance Criteria
 
 - The production top navbar/admin dropdown is replaced on refreshed screens by the new shell/navigation treatment.
+- Implementation references the accepted mockup shell/navigation behavior and documents any copied or adapted component/style code.
 - Navigation includes Projects, Users, Groups, Maintenance, Jobs, My Account, and Logout.
 - Each nav item routes to the same production destination or an approved refreshed equivalent.
 - Current user role/account context remains visible.

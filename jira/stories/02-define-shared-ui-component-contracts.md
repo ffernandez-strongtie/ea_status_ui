@@ -10,6 +10,8 @@ For the refreshed screens, replace Bootstrap-oriented UI styling and interaction
 
 This story is about the UI foundation only. It does not require migrating the production app to Vite, Next.js, React Router, or any other application framework unless that is separately approved. Keep the current production architecture and routing approach unless another story or technical decision explicitly changes it.
 
+Use the accepted static mockup as an implementation reference for component structure, visual styling, spacing, navigation behavior, and responsive treatment. Engineers may reference or copy production-compatible pieces from `Uploads/statusui/src/App.jsx`, `Uploads/statusui/src/components/ui/*`, and `Uploads/statusui/assets/css/super-admin.css` when those pieces can be adapted cleanly into the production app and still use the approved Strong-Tie Design System libraries, CSS, tokens, and conventions.
+
 Use the design system guidance to identify the correct production-compatible choices for:
 
 - Design tokens, spacing, typography, colors, border radius, focus states, and shadows.
@@ -37,6 +39,7 @@ Treat design-system primitives as shared building blocks, not page-specific comp
 - Bootstrap-specific component patterns used by refreshed screens are inventoried and mapped to Strong-Tie Design System replacements.
 - The refreshed screens use the appropriate Strong-Tie Design System CSS, tokens, component classes, and/or approved UI libraries from `design.strongtie.io`.
 - Shared component contracts are documented for shell, navigation, page headers, buttons, tables, filters, badges, dialogs/sheets, forms, and pagination.
+- Implementation notes identify which accepted mockup components/styles were referenced, copied, or adapted into the production codebase.
 - Shared components fit the existing production app architecture and do not require a framework migration.
 - Shared components include required loading, error, empty, disabled, and validation states where applicable.
 - Accessibility requirements from the design guide are built into the components: labeled inputs, visible focus states, keyboard-accessible controls, icon button accessible names, meaningful image alt text, and non-color-only status indicators.
