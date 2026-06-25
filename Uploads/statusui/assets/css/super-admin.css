@@ -492,19 +492,27 @@ button {
 }
 
 .account-menu-list a,
+.account-menu-list .account-menu-item,
 .account-menu-list .account-type-label {
   display: flex;
+  width: 100%;
   min-height: 36px;
   align-items: center;
   gap: var(--space-100);
+  border: 0;
   border-radius: var(--corner-radius-100);
+  background: transparent;
   padding: var(--space-100) var(--space-200);
   color: var(--surface-primary-foreground);
   font-size: var(--font-size-100);
+  font: inherit;
+  text-align: left;
 }
 
 .account-menu-list a:hover,
-.account-menu-list a:focus-visible {
+.account-menu-list a:focus-visible,
+.account-menu-list .account-menu-item:hover,
+.account-menu-list .account-menu-item:focus-visible {
   background: var(--surface-primary-muted-background);
 }
 
