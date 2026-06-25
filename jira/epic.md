@@ -63,6 +63,30 @@ Out of scope unless separately approved:
 
 ## References
 
+- Hosted mockup: `https://ffernandez-strongtie.github.io/ea_status_ui/login.html`
+- GitHub repository: `https://github.com/ffernandez-strongtie/ea_status_ui`
 - Local mockup: `statusui_nextjs/nextjs_space`
 - Primary mockup component: `statusui_nextjs/nextjs_space/app/components/status-app.tsx`
+- Static mockup implementation: `Uploads/statusui`
 - Production app: `https://strongtiesoftware.com/statusui`
+
+## Mockup Review Instructions
+
+Use the hosted GitHub Pages mockup to review the accepted UI direction before or during story refinement:
+
+1. Open `https://ffernandez-strongtie.github.io/ea_status_ui/login.html`.
+2. Choose one of the three demo access levels: `User`, `Admin`, or `Internal Admin`.
+3. The mockup stores the selected role in browser local storage. Use the account menu in the lower-left sidebar and select `Logout` to return to the role picker.
+4. Direct navigation to a page outside the selected role shows an `Access Restricted` page. This is intentional and demonstrates role-based visibility; it is not a production authentication design.
+
+Role-specific review paths:
+
+- `User`: review `Transmissions`, open a transmission detail from the table, and review `My Account`. This role demonstrates the engineering/customer-facing review surface without admin navigation.
+- `Admin`: review `Transmissions`, `Users`, `Groups`, user details, user edit/create form, group edit/create form, and `My Account`. This role demonstrates customer/group administration without internal-only operational pages.
+- `Internal Admin`: review the full mockup, including `Transmissions`, `Users`, `Groups`, `Maintenance`, `Jobs`, and `My Account`.
+
+Important review notes:
+
+- The mockup is static and intentionally uses fake role selection instead of real authentication.
+- The mockup demonstrates navigation, layout, role visibility, form structure, table treatment, status presentation, and responsive behavior.
+- The production implementation should preserve existing authentication, authorization, routes, server-side behavior, and data contracts unless a story or product decision explicitly changes them.
