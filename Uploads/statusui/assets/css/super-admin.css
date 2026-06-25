@@ -829,6 +829,112 @@ button {
   font-size: var(--font-size-100);
 }
 
+.login-shell {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: var(--space-500);
+  background: #f4f4f5;
+}
+
+.login-panel {
+  width: min(960px, 100%);
+  display: grid;
+  gap: var(--space-500);
+}
+
+.login-brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-300);
+}
+
+.login-logo {
+  width: 58px;
+  height: auto;
+  flex: 0 0 auto;
+}
+
+.login-title {
+  margin: 0;
+  font-size: var(--font-size-600);
+  line-height: 1.15;
+  letter-spacing: 0;
+}
+
+.login-subtitle {
+  max-width: 640px;
+  margin: var(--space-75) 0 0;
+  color: var(--surface-primary-muted-foreground);
+}
+
+.login-role-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-300);
+}
+
+.login-role-card {
+  display: grid;
+  min-height: 220px;
+  align-content: start;
+  gap: var(--space-300);
+  padding: var(--space-400);
+  border: 1px solid var(--surface-primary-border);
+  border-radius: var(--corner-radius-200);
+  background: var(--surface-primary-background);
+  color: var(--surface-primary-foreground);
+  text-align: left;
+  cursor: pointer;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.04);
+  transition: border-color 120ms ease, box-shadow 120ms ease, transform 120ms ease;
+}
+
+.login-role-card:hover,
+.login-role-card:focus-visible {
+  border-color: var(--sst-color-orange-400);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 0.08);
+  transform: translateY(-1px);
+}
+
+.login-role-heading {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-100);
+  font-size: var(--font-size-300);
+  font-weight: var(--font-weight-bold);
+}
+
+.login-role-heading svg {
+  width: 20px;
+  height: 20px;
+  color: var(--sst-color-orange-400);
+}
+
+.login-role-summary {
+  color: var(--surface-primary-muted-foreground);
+  font-size: var(--font-size-100);
+}
+
+.login-access-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-100);
+  margin-top: auto;
+}
+
+.login-access-pill {
+  display: inline-flex;
+  min-height: 24px;
+  align-items: center;
+  border-radius: var(--corner-radius-9999);
+  background: var(--surface-primary-muted-background);
+  color: var(--surface-primary-foreground);
+  font-size: var(--font-size-75);
+  font-weight: var(--font-weight-medium);
+  padding: 0 var(--space-100);
+}
+
 .compact-table {
   margin-top: var(--space-200);
 }
@@ -1728,6 +1834,7 @@ tr:last-child td {
   }
 
   .grid,
+  .login-role-grid,
   .split,
   .form-grid,
   .user-edit-layout,
@@ -1741,6 +1848,15 @@ tr:last-child td {
   .readonly-field-grid,
   .submission-detail-card .detail-list-card {
     grid-template-columns: 1fr;
+  }
+
+  .login-shell {
+    align-items: start;
+    padding: var(--space-400) var(--space-300);
+  }
+
+  .login-brand {
+    align-items: flex-start;
   }
 }
 
@@ -1761,6 +1877,18 @@ tr:last-child td {
 
   .page-title {
     font-size: var(--font-size-400);
+  }
+
+  .login-title {
+    font-size: var(--font-size-400);
+  }
+
+  .login-brand {
+    display: grid;
+  }
+
+  .login-role-card {
+    min-height: 0;
   }
 
   .search-toolbar,

@@ -34,16 +34,47 @@ import { Separator } from "./components/ui/separator";
 import { Sheet, SheetClose, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle } from "./components/ui/sheet";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "./components/ui/table";
 
-const CURRENT_USER = "Frank Fernandez";
 const IS_DESKTOP_QUERY = "(min-width: 992px)";
 const BASE_PATH = (import.meta.env.BASE_URL || "/").replace(/\/$/, "");
+const SESSION_STORAGE_KEY = "statusui-demo-session";
+
+const DEMO_USERS = {
+  User: {
+    name: "Casey Reviewer",
+    email: "casey.reviewer@example.com",
+    role: "User",
+    group: "Route 66 Truss Company",
+    description: "Transmission review access",
+  },
+  Admin: {
+    name: "Alex Group Admin",
+    email: "alex.admin@example.com",
+    role: "Admin",
+    group: "Route 66 Truss Company",
+    description: "Transmission, user, and group access",
+  },
+  "Internal Admin": {
+    name: "Frank Fernandez",
+    email: "frank.fernandez@example.com",
+    role: "Internal Admin",
+    group: "Simpson Engineering",
+    description: "Full administrative access",
+  },
+};
+
+const ROLE_HOME = "/index.html";
+const ROLE_ACCESS = {
+  User: new Set(["/index.html", "/submission-details.html", "/account.html"]),
+  Admin: new Set(["/index.html", "/submission-details.html", "/users.html", "/user-details.html", "/user-form.html", "/groups.html", "/group-form.html", "/account.html"]),
+  "Internal Admin": new Set(["/index.html", "/submission-details.html", "/users.html", "/user-details.html", "/user-form.html", "/groups.html", "/group-form.html", "/maintenance.html", "/jobs.html", "/account.html"]),
+};
 
 const NAV_ITEMS = [
-  { href: "/index.html", label: "Transmissions", icon: FileText },
-  { href: "/users.html", label: "Users", icon: Users },
-  { href: "/groups.html", label: "Groups", icon: Network },
-  { href: "/maintenance.html", label: "Maintenance", icon: SlidersHorizontal },
-  { href: "/jobs.html", label: "Jobs", icon: BriefcaseBusiness },
+  { href: "/index.html", label: "Transmissions", icon: FileText, roles: ["User", "Admin", "Internal Admin"] },
+  { href: "/users.html", label: "Users", icon: Users, roles: ["Admin", "Internal Admin"] },
+  { href: "/groups.html", label: "Groups", icon: Network, roles: ["Admin", "Internal Admin"] },
+  { href: "/maintenance.html", label: "Maintenance", icon: SlidersHorizontal, roles: ["Internal Admin"] },
+  { href: "/jobs.html", label: "Jobs", icon: BriefcaseBusiness, roles: ["Internal Admin"] },
 ];
 
 const PROJECTS = [
@@ -102,13 +133,6 @@ const JOBS = [
   { id: "4012", name: "Nightly transmission sync", type: "Import", status: "Running" },
   { id: "4013", name: "Project index rebuild", type: "Maintenance", status: "Queued" },
   { id: "4014", name: "Customer export", type: "Export", status: "Complete" },
-];
-
-const DETAIL_ITEMS = [
-  ["Account type", "Internal Admin"],
-  ["Email", "frank.fernandez@example.com"],
-  ["Group", "Route 66 Truss Company"],
-  ["Last login", "5/6/2026 9:02 AM"],
 ];
 
 function getUserEditPath(userId) {
@@ -224,6 +248,29 @@ function navigate(to) {
   window.scrollTo(0, 0);
 }
 
+function canAccessPath(user, pathname) {
+  if (pathname === "/login.html") return true;
+  if (!user) return false;
+  return ROLE_ACCESS[user.role]?.has(pathname) ?? false;
+}
+
+function getStoredDemoUser() {
+  try {
+    const role = window.localStorage.getItem(SESSION_STORAGE_KEY);
+    return DEMO_USERS[role] ?? null;
+  } catch {
+    return null;
+  }
+}
+
+function storeDemoUser(role) {
+  window.localStorage.setItem(SESSION_STORAGE_KEY, role);
+}
+
+function clearDemoUser() {
+  window.localStorage.removeItem(SESSION_STORAGE_KEY);
+}
+
 function AppLink({ to, currentPath, className = "", children }) {
   return (
     <a
@@ -241,8 +288,9 @@ function AppLink({ to, currentPath, className = "", children }) {
   );
 }
 
-function Shell({ pathname, children, isDesktop, sidebarCollapsed, setSidebarCollapsed, mobileNavOpen, setMobileNavOpen }) {
+function Shell({ pathname, children, isDesktop, sidebarCollapsed, setSidebarCollapsed, mobileNavOpen, setMobileNavOpen, currentUser, onLogout }) {
   const [accountOpen, setAccountOpen] = useState(false);
+  const visibleNavItems = NAV_ITEMS.filter((item) => item.roles.includes(currentUser.role));
 
   useEffect(() => {
     setAccountOpen(false);
@@ -282,7 +330,7 @@ function Shell({ pathname, children, isDesktop, sidebarCollapsed, setSidebarColl
           <div className={`nav-panel${mobileNavOpen ? " is-open" : ""}`} id="superAdminNavbar">
             <NavigationMenu className="main-nav" aria-label="SuperAdmin navigation">
               <NavigationMenuList className="main-nav-list">
-                {NAV_ITEMS.map((item) => (
+                {visibleNavItems.map((item) => (
                   <AppLink key={item.href} to={item.href} currentPath={pathname} className="nav-link">
                     <span className="nav-link-icon-wrap">
                       <item.icon className="nav-icon" aria-hidden="true" />
@@ -294,23 +342,23 @@ function Shell({ pathname, children, isDesktop, sidebarCollapsed, setSidebarColl
             </NavigationMenu>
             <div className="account-block">
               <div className="dropdown">
-                <Button type="button" className="account-menu-button dropdown-toggle" onClick={() => setAccountOpen((value) => !value)} aria-expanded={String(accountOpen)} aria-label={`Account menu for ${CURRENT_USER}`}>
+                <Button type="button" className="account-menu-button dropdown-toggle" onClick={() => setAccountOpen((value) => !value)} aria-expanded={String(accountOpen)} aria-label={`Account menu for ${currentUser.name}`}>
                   <UserCog className="account-type-icon" aria-hidden="true" />
-                  <span className="account-display-name">{CURRENT_USER}</span>
+                  <span className="account-display-name">{currentUser.name}</span>
                   <ChevronDown className="dropdown-chevron" aria-hidden="true" />
                 </Button>
                 {accountOpen ? (
                   <div className="account-menu-list is-open">
                     <div className="account-type-label">
                       <UserCog aria-hidden="true" />
-                      <span>Internal Admin</span>
+                      <span>{currentUser.role}</span>
                     </div>
                     <Separator />
                     <AppLink className="account-menu-item" to="/account.html" currentPath={pathname}>
                       <UserRound aria-hidden="true" />
                       <span>My Account</span>
                     </AppLink>
-                    <button type="button" className="account-menu-item">
+                    <button type="button" className="account-menu-item" onClick={onLogout}>
                       <LogOut aria-hidden="true" />
                       <span>Logout</span>
                     </button>
@@ -343,6 +391,93 @@ function PageHeader({ title, subtitle, actions }) {
       </div>
       {actions}
     </section>
+  );
+}
+
+function LoginPage({ onLogin }) {
+  const roleOptions = [
+    {
+      role: "User",
+      title: "User",
+      summary: "Review transmitted components and open transmission details.",
+      access: ["Transmissions", "Transmission details", "My Account"],
+    },
+    {
+      role: "Admin",
+      title: "Admin",
+      summary: "Manage transmitted components plus users and customer groups.",
+      access: ["Transmissions", "Users", "Groups", "My Account"],
+    },
+    {
+      role: "Internal Admin",
+      title: "Internal Admin",
+      summary: "Use the full StatusUI administrative surface.",
+      access: ["Transmissions", "Users", "Groups", "Maintenance", "Jobs", "My Account"],
+    },
+  ];
+
+  useEffect(() => {
+    document.title = "Login - StatusUI";
+  }, []);
+
+  return (
+    <main className="login-shell">
+      <section className="login-panel" aria-labelledby="login-title">
+        <div className="login-brand">
+          <img className="login-logo" src={logo} alt="Simpson Strong-Tie" />
+          <div>
+            <p className="page-kicker">Demo access</p>
+            <h1 id="login-title" className="login-title">Engineering Status Service</h1>
+            <p className="login-subtitle">Choose a role to preview how the refreshed UI changes by access level.</p>
+          </div>
+        </div>
+        <div className="login-role-grid">
+          {roleOptions.map((option) => (
+            <button key={option.role} type="button" className="login-role-card" onClick={() => onLogin(option.role)}>
+              <span className="login-role-heading">
+                <UserCog aria-hidden="true" />
+                <span>{option.title}</span>
+              </span>
+              <span className="login-role-summary">{option.summary}</span>
+              <span className="login-access-list">
+                {option.access.map((item) => (
+                  <span key={item} className="login-access-pill">{item}</span>
+                ))}
+              </span>
+            </button>
+          ))}
+        </div>
+      </section>
+    </main>
+  );
+}
+
+function AccessDeniedPage({ pathname, currentUser }) {
+  return (
+    <>
+      <PageHeader
+        title="Access Restricted"
+        subtitle={<>The <strong>{currentUser.role}</strong> preview does not include access to this page.</>}
+        actions={
+          <AppLink to={ROLE_HOME} currentPath={pathname} className="button primary">
+            <ArrowLeft aria-hidden="true" />
+            <span className="button-label">Back to Transmissions</span>
+          </AppLink>
+        }
+      />
+      <section className="card">
+        <div className="card-body">
+          <div className="warning-alert">
+            <TriangleAlert aria-hidden="true" />
+            <span>Use the account menu to log out and choose a higher access level if you want to preview admin-only pages.</span>
+          </div>
+          <div className="detail-list">
+            <div className="detail-row"><span>Selected role</span><strong>{currentUser.role}</strong></div>
+            <div className="detail-row"><span>Requested page</span><strong>{pathname}</strong></div>
+          </div>
+        </div>
+      </section>
+    </>
   );
 }
 
@@ -733,20 +868,27 @@ function MaintenancePage() {
   );
 }
 
-function AccountPage({ pathname }) {
+function AccountPage({ pathname, currentUser }) {
+  const detailItems = [
+    ["Account type", currentUser.role],
+    ["Email", currentUser.email],
+    ["Group", currentUser.group],
+    ["Last login", "5/6/2026 9:02 AM"],
+  ];
+
   return (
     <>
-      <PageHeader title="My Account" subtitle={<>Internal admin profile settings</>} />
+      <PageHeader title="My Account" subtitle={<>{currentUser.role} profile settings</>} />
       <div className="form-grid">
         <Card>
           <CardContent>
             <div className="form-row">
               <Label htmlFor="display-name">Display Name</Label>
-              <Input id="display-name" value={CURRENT_USER} readOnly />
+              <Input id="display-name" value={currentUser.name} readOnly />
             </div>
             <div className="form-row">
               <Label htmlFor="account-email">Email</Label>
-              <Input id="account-email" value="frank.fernandez@example.com" readOnly />
+              <Input id="account-email" value={currentUser.email} readOnly />
             </div>
             <div className="page-actions">
               <Button type="button" variant="outline">
@@ -766,7 +908,7 @@ function AccountPage({ pathname }) {
           </CardHeader>
           <CardContent>
             <div className="detail-list">
-              {DETAIL_ITEMS.map(([label, value]) => (
+              {detailItems.map(([label, value]) => (
                 <div className="detail-row" key={label}>
                   <span>{label}</span>
                   <strong>{value}</strong>
@@ -1290,25 +1432,30 @@ function GroupFormPage({ pathname, groups, users, onSaveGroup }) {
   );
 }
 
-function Router({ pathname, isDesktop, sidebarCollapsed, setSidebarCollapsed, mobileNavOpen, setMobileNavOpen, users, groups, onSaveUser, onSaveGroup, onResetPassword }) {
+function Router({ pathname, isDesktop, sidebarCollapsed, setSidebarCollapsed, mobileNavOpen, setMobileNavOpen, users, groups, onSaveUser, onSaveGroup, onResetPassword, currentUser, onLogout }) {
   useEffect(() => {
     document.title = {
-      "/index.html": "Transmissions - SuperAdmin StatusUI",
-      "/users.html": "Users - SuperAdmin StatusUI",
-      "/groups.html": "Groups - SuperAdmin StatusUI",
-      "/jobs.html": "Jobs - SuperAdmin StatusUI",
-      "/maintenance.html": "Maintenance - SuperAdmin StatusUI",
-      "/account.html": "My Account - SuperAdmin StatusUI",
-      "/user-details.html": "User Details - SuperAdmin StatusUI",
-      "/user-form.html": "Edit User - SuperAdmin StatusUI",
-      "/group-form.html": "Edit Group - SuperAdmin StatusUI",
-      "/submission-details.html": "Transmission Details - SuperAdmin StatusUI",
+      "/index.html": "Transmissions - StatusUI",
+      "/login.html": "Login - StatusUI",
+      "/users.html": "Users - StatusUI",
+      "/groups.html": "Groups - StatusUI",
+      "/jobs.html": "Jobs - StatusUI",
+      "/maintenance.html": "Maintenance - StatusUI",
+      "/account.html": "My Account - StatusUI",
+      "/user-details.html": "User Details - StatusUI",
+      "/user-form.html": "Edit User - StatusUI",
+      "/group-form.html": "Edit Group - StatusUI",
+      "/submission-details.html": "Transmission Details - StatusUI",
     }[pathname] || "StatusUI";
   }, [pathname]);
 
   const userId = useQueryValue("user");
 
   const page = (() => {
+    if (!canAccessPath(currentUser, pathname)) {
+      return <AccessDeniedPage pathname={pathname} currentUser={currentUser} />;
+    }
+
     switch (pathname) {
       case "/users.html":
         return <UsersPage pathname={pathname} users={users} groups={groups} />;
@@ -1319,7 +1466,7 @@ function Router({ pathname, isDesktop, sidebarCollapsed, setSidebarCollapsed, mo
       case "/maintenance.html":
         return <MaintenancePage pathname={pathname} />;
       case "/account.html":
-        return <AccountPage pathname={pathname} />;
+        return <AccountPage pathname={pathname} currentUser={currentUser} />;
       case "/user-details.html":
         return <UserDetailsPage pathname={pathname} users={users} groups={groups} userId={userId} />;
       case "/user-form.html":
@@ -1342,6 +1489,8 @@ function Router({ pathname, isDesktop, sidebarCollapsed, setSidebarCollapsed, mo
       setSidebarCollapsed={setSidebarCollapsed}
       mobileNavOpen={mobileNavOpen}
       setMobileNavOpen={setMobileNavOpen}
+      currentUser={currentUser}
+      onLogout={onLogout}
     >
       {page}
     </Shell>
@@ -1355,6 +1504,21 @@ export default function App() {
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [users, setUsers] = useState(INITIAL_USERS);
   const [groups, setGroups] = useState(INITIAL_GROUPS);
+  const [currentUser, setCurrentUser] = useState(getStoredDemoUser);
+
+  const handleLogin = (role) => {
+    const user = DEMO_USERS[role];
+    if (!user) return;
+    storeDemoUser(role);
+    setCurrentUser(user);
+    navigate(ROLE_HOME);
+  };
+
+  const handleLogout = () => {
+    clearDemoUser();
+    setCurrentUser(null);
+    navigate("/login.html");
+  };
 
   useEffect(() => {
     const media = window.matchMedia(IS_DESKTOP_QUERY);
@@ -1374,6 +1538,12 @@ export default function App() {
   useEffect(() => {
     setMobileNavOpen(false);
   }, [pathname]);
+
+  useEffect(() => {
+    if (!currentUser && pathname !== "/login.html") {
+      navigate("/login.html");
+    }
+  }, [currentUser, pathname]);
 
   const handleSaveUser = (originalUserId, nextUser) => {
     const normalizedUser = {
@@ -1432,6 +1602,10 @@ export default function App() {
     )));
   };
 
+  if (!currentUser || pathname === "/login.html") {
+    return <LoginPage onLogin={handleLogin} />;
+  }
+
   return (
     <Router
       pathname={pathname}
@@ -1445,6 +1619,8 @@ export default function App() {
       onSaveUser={handleSaveUser}
       onSaveGroup={handleSaveGroup}
       onResetPassword={handleResetPassword}
+      currentUser={currentUser}
+      onLogout={handleLogout}
     />
   );
 }

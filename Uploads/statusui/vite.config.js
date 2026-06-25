@@ -5,6 +5,7 @@ import { resolve } from "node:path";
 const pages = [
   "index",
   "account",
+  "login",
   "group-form",
   "groups",
   "jobs",
