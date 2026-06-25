@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <rect width="256" height="256" fill="#ffffff"/>
+  <path d="M60 80 Q60 65 75 65 L95 65 Q105 65 105 75 Q105 82 98 85 Q108 88 108 98 Q108 110 95 110 L75 110 Q60 110 60 95 Z M75 80 L75 90 L90 90 Q93 90 93 85 Q93 80 90 80 Z M75 100 L92 100 Q95 100 95 96 Q95 92 92 92 L75 92 Z" fill="#ff5308"/>
+  <path d="M120 80 Q120 65 135 65 L155 65 Q165 65 165 75 Q165 82 158 85 Q168 88 168 98 Q168 110 155 110 L135 110 Q120 110 120 95 Z M135 80 L135 90 L150 90 Q153 90 153 85 Q153 80 150 80 Z M135 100 L152 100 Q155 100 155 96 Q155 92 152 92 L135 92 Z" fill="#ff5308"/>
+  <path d="M185 80 L185 110 L200 110 L200 65 L185 65 L185 75 L195 75 L195 80 Z" fill="#ff5308"/>
+  <text x="128" y="175" font-family="Arial, sans-serif" font-size="72" font-weight="bold" text-anchor="middle" fill="#ff5308">SST</text>
+</svg>

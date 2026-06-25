@@ -1,0 +1,82 @@
+{
+  "sections": [
+    {
+      "tag": "div",
+      "x": 0,
+      "y": 0,
+      "width": 1440,
+      "height": 900,
+      "text": "Spectrum\nStatus light\nVersion 6.0.0\n\nStatus lights describe the condition of an entity. They can be used to convey semantic meaning, such as statuses and categories.\n\nTable of contents#\nAnatomy\nOption",
+      "bg": "#f8f8f8",
+      "color": "#222222",
+      "fontSize": "14px",
+      "fontWeight": "400",
+      "fontFamily": "adobe-clean",
+      "classes": "JuTe6q_spectrum _5QszkG_spectrum _5QszkG_i18nFontFamily PFjRbG_spectrum--light xSyFOq_spectrum--medium zA6MfG_spectrum zA6MfG_spectrum--dark zA6MfG_spectrum--darkest zA6MfG_spectrum--large zA6MfG_spectrum--light zA6MfG_spectrum--lightest zA6MfG_spectrum--medium"
+    },
+    {
+      "tag": "nav",
+      "x": 0,
+      "y": 0,
+      "width": 256,
+      "height": 900,
+      "text": "Spectrum",
+      "bg": "#f8f8f8",
+      "color": "#222222",
+      "fontSize": "14px",
+      "fontWeight": "400",
+      "fontFamily": "adobe-clean",
+      "classes": "layout_nav__fHtXU"
+    },
+    {
+      "tag": "header",
+      "x": 0,
+      "y": 0,
+      "width": 256,
+      "height": 142,
+      "text": "Spectrum",
+      "bg": null,
+      "color": "#222222",
+      "fontSize": "14px",
+      "fontWeight": "400",
+      "fontFamily": "adobe-clean",
+      "classes": "sidebar_head__5oI7S"
+    },
+    {
+      "tag": "a",
+      "x": 24,
+      "y": 30,
+      "width": 208,
+      "height": 32,
+      "text": "Spectrum",
+      "bg": null,
+      "color": "#0000ee",
+      "fontSize": "14px",
+      "fontWeight": "400",
+      "fontFamily": "adobe-clean",
+      "classes": "logo_text__J6RN3"
+    },
+    {
+      "tag": "main",
+      "x": 256,
+      "y": 0,
+      "width": 1184,
+      "height": 900,
+      "text": "Status light\nVersion 6.0.0\n\nStatus lights describe the condition of an entity. They can be used to convey semantic meaning, such as statuses and categories.\n\nTable of contents#\nAnatomy\nOptions\nBehavio",
+      "bg": null,
+      "color": "#222222",
+      "fontSize": "14px",
+      "fontWeight": "400",
+      "fontFamily": "adobe-clean",
+      "classes": "layout_main__IC0zG"
+    }
+  ],
+  "images": [],
+  "fonts": [
+    "adobe-clean"
+  ],
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  }
+}
